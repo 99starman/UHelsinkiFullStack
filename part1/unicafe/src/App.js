@@ -22,16 +22,20 @@ const Statistics = ({ good, neutral, bad}) => {
   return <p>No feedback given</p>
 }
 
-const StatisticLine = ({ text, value }) => (
-  <tr>
-    <td>{text}</td>
-    <td>{value}</td>
-  </tr>
-);
+const StatisticLine = ({ text, value }) => {
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>    
+  )
+}
 
-const Button = ({ onClick, text }) => (
-  <button onClick={onClick}>{text}</button>
-);
+const Button = ({ onClick, text }) => {
+  return (
+    <button onClick={onClick}>{text}</button>
+  )
+}  
 
 const App = () => {
   // save clicks of each button to its own state
