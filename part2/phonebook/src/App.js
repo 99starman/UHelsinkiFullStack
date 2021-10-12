@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Persons from './components/Persons'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -7,54 +10,26 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ]) 
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber ] = useState('')
+  const [ filter, setNewFilter ] = useState('')
+  const [ filteredPersons, setFilteredPersons ] = useState('')
 
-  const addPerson = (event) => {
-    event.preventDefault()
-
-    const personsArray = persons.map(e => e.name)
-    const personObject = {
-      name: newName,
-      number: newNumber,
-      id: persons.length + 1
-    }
-    if (personsArray.includes(`${newName}`)) {
-      alert(`${newName} is already added to phonebook`)
-    } else {
-      setPersons(persons.concat(personObject))
-    }
-    
-    setNewName('')
-    setNewNumber('')
-  }
-
-  const handleNameChange = (e) => {
-    setNewName(e.target.value)
-  }
-
-  const handleNumberChange = (e) => {
-    setNewNumber(e.target.value)
-  }
+  const handleFilterChange = (e) => {
+    setNewFilter(e.target.value)
+    setFilteredPersons(persons.filter(person =>
+      (person.name.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1)))
+  } 
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-           number: <input value={newNumber} onChange={handleNumberChange} />         
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-      {persons.map((e, i) => <li key={i}>{e.name} {e.number} </li>)}
-      </ul>
+      <Filter onChange={handleFilterChange} value={filter} />
+      <h3>add a new</h3>
+      <PersonForm persons={persons} setPersons={setPersons} />
+      <h3>Numbers</h3>
+      <div>
+        { filter === '' ? <Persons persons={persons} /> : <Persons persons={filteredPersons} /> }
+      </div>
+      
     </div>
   )
 }
